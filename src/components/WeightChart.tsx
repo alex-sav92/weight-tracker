@@ -11,9 +11,7 @@ import type { WeightEntry } from "../types/WeightEntry";
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale);
 
 export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
-  const sorted = [...entries].sort((a, b) =>
-    a.date.localeCompare(b.date)
-  );
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
 
   const data = {
     labels: sorted.map(e => e.date),
@@ -22,9 +20,21 @@ export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
         label: "Weight (kg)",
         data: sorted.map(e => e.weight),
         borderColor: "blue",
+        backgroundColor: "rgba(59, 130, 246, 0.2)",
+        tension: 0.3
       },
     ],
   };
 
-  return <Line data={data} />;
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: { display: false },
+    },
+    scales: {
+      y: { beginAtZero: false },
+    },
+  };
+
+  return <Line data={data} options={options} />;
 }
