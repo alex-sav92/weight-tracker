@@ -1,35 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import type { WeightEntry } from "./types/WeightEntry";
+import { loadWeights, saveWeights } from "./utils/storage";
+import AddWeight from "./components/AddWeight";
+import WeightList from "./components/WeightList";
+import WeightChart from "./components/WeightChart";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [entries, setEntries] = useState<WeightEntry[]>([]);
+
+  useEffect(() => {
+    setEntries(loadWeights());
+  }, []);
+
+  useEffect(() => {
+    saveWeights(entries);
+  }, [entries]);
+
+  function addEntry(entry: WeightEntry) {
+    setEntries([...entries, entry]);
+  }
+
+  function deleteEntry(id: string) {
+    setEntries(entries.filter(e => e.id !== id));
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ maxWidth: 600, margin: "auto" }}>
+      <h1>⚖️ Weight Tracker</h1>
+      <h1 className="text-3xl font-bold text-blue-600 text-center mt-8">
+        Tailwind is working!
+      </h1>
+      <AddWeight onAdd={addEntry} />
+      <WeightChart entries={entries} />
+      <WeightList entries={entries} onDelete={deleteEntry} />
+    </div>
+  );
 }
 
-export default App
+export default App;
