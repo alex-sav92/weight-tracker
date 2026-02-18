@@ -1,6 +1,6 @@
 import type { JSX } from "react/jsx-runtime";
 import type { WeightEntry } from "../types/WeightEntry";
-
+import { formatDate } from "../utils/date";
 type Props = {
   entries: WeightEntry[];
   onDelete: (id: string) => void;
@@ -34,7 +34,7 @@ export default function WeightList({ entries, onDelete }: Props) {
             className="flex justify-between items-center py-2"
           >
             <span className="flex items-center">
-              {arrow} {e.date} — {e.weight} kg 
+              {arrow} {formatDate(e.date)} — {e.weight} kg 
             </span>
             <button
               onClick={() => onDelete(e.id)}
