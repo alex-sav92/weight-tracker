@@ -6,9 +6,13 @@ type Props = {
 };
 
 export default function WeightList({ entries, onDelete }: Props) {
+  const sortedEntries = [...entries].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  )
+
   return (
     <ul className="divide-y divide-gray-200">
-      {entries.map((e) => (
+      {sortedEntries.map((e) => (
         <li key={e.id} className="flex justify-between items-center py-2">
           <span>{e.date} — {e.weight} kg</span>
           <button
