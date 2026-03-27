@@ -25,13 +25,14 @@ function App() {
   }
 
   const exportData = () => {
+    const now = new Date();
     const data = JSON.stringify(entries, null, 2)
     const blob = new Blob([data], { type: "application/json" })
     const url = URL.createObjectURL(blob)
 
     const a = document.createElement("a")
     a.href = url
-    a.download = "weight-data.json"
+    a.download = `weight-data-${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}.json`
     a.click()
 
     URL.revokeObjectURL(url)
