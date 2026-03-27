@@ -20,9 +20,9 @@ export default function WeightList({ entries, onDelete }: Props) {
         if (idx < sorted.length - 1) {
           const prev = sorted[idx + 1].weight;
           if (e.weight > prev) {
-            arrow = <span className="text-red-500 font-bold">↑</span>;
+            arrow = <span className="text-red-500 font-bold">🠝</span>;
           } else if (e.weight < prev) {
-            arrow = <span className="text-green-500 font-bold">↓</span>;
+            arrow = <span className="text-green-500 font-bold">🠟</span>;
           } else {
             arrow = <span className="text-gray-400">→</span>;
           }
