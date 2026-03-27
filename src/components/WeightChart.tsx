@@ -6,6 +6,7 @@ import {
   CategoryScale,
   Tooltip
 } from "chart.js";
+import { formatDateShort } from "../utils/date";
 import { Line } from "react-chartjs-2";
 import type { WeightEntry } from "../types/WeightEntry";
 
@@ -15,7 +16,7 @@ export default function WeightChart({ entries }: { entries: WeightEntry[] }) {
   const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
 
   const data = {
-    labels: sorted.map((e) => e.date),
+    labels: sorted.map((e) => formatDateShort(e.date)),
     datasets: [
       {
         label: "Weight (kg)",
