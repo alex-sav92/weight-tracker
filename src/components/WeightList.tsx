@@ -37,7 +37,15 @@ export default function WeightList({ entries, onDelete }: Props) {
               {arrow} {formatDate(e.date)} — {e.weight} kg 
             </span>
             <button
-              onClick={() => onDelete(e.id)}
+              onClick={() => {
+                const confirmed = window.confirm(
+                  `Delete entry: ${formatDate(e.date)} (${e.weight} kg)?`
+                )
+
+                if (confirmed) {
+                  onDelete(e.id)
+                }
+            }}
               className="text-red-500 hover:text-red-700 transition"
             >
               ❌
