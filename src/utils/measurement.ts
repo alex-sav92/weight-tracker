@@ -24,7 +24,7 @@ export function getMeasurementChange(
 export function getPreviousMeasurementValue(
   measurements: MeasurementEntry[],
   currentIndex: number,
-  field: "chest" | "waist" | "hips"
+  field: "chest" | "waist" | "hips" | "neck" | "biceps"
 ): number | undefined {
   for (let index = currentIndex + 1; index < measurements.length; index++) {
     const value = measurements[index][field];

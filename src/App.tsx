@@ -11,6 +11,7 @@ import {
   loadMeasurements,
   saveMeasurements,
 } from "./utils/measurementStorage";
+import MeasurementChart from "./components/MeasurementChart";
 function App() {
   const [entries, setEntries] = useState<WeightEntry[]>([]);
   const [measurements, setMeasurements] = useState<MeasurementEntry[]>(loadMeasurements);
@@ -83,20 +84,21 @@ function App() {
 }
 
   return (
-   <div className="min-h-screen bg-gray-100 p-4">
+  <div className="min-h-screen bg-gray-100 p-4">
     <div className="max-w-full md:max-w-3xl lg:max-w-6xl mx-auto">
       <h1 className="text-3xl font-bold text-center text-blue-600 mb-8">
         ⚖️ Weight Tracker
       </h1>
 
+      {/* Weight section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Chart */}
+        {/* Weight chart */}
         <div className="lg:col-span-2 bg-white shadow-md rounded-lg p-4 md:p-6">
           <h2 className="text-lg font-semibold mb-4">Progress</h2>
           <WeightChart entries={entries} />
         </div>
 
-        {/* Right column */}
+        {/* Weight controls and history */}
         <div className="space-y-6">
           <div className="flex flex-col gap-3">
             <button
@@ -114,29 +116,37 @@ function App() {
                 className="hidden"
                 onChange={(e) => {
                   if (e.target.files?.[0]) {
-                    importData(e.target.files[0])
+                    importData(e.target.files[0]);
                   }
                 }}
               />
             </label>
           </div>
+
           <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
             <AddWeight onAdd={addEntry} />
           </div>
 
           <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
-            <WeightList entries={entries} onDelete={deleteEntry} />
+            <WeightList
+              entries={entries}
+              onDelete={deleteEntry}
+            />
           </div>
-
-          <MeasurementForm onAdd={handleAddMeasurement} />
-          <MeasurementList
-            measurements={measurements}
-            onDelete={handleDeleteMeasurement}
-          />
         </div>
       </div>
+
+      {/* Measurement section */}
+      <div className="mt-6 space-y-6">
+        <MeasurementForm onAdd={handleAddMeasurement} />
+        <MeasurementChart measurements={measurements} />
+        <MeasurementList
+          measurements={measurements}
+          onDelete={handleDeleteMeasurement}
+        />
+      </div>
+    </div>
   </div>
-</div>
-  );
+);
 };
 export default App;
