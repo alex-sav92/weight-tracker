@@ -4,9 +4,16 @@ import { loadWeights, saveWeights } from "./utils/storage";
 import AddWeight from "./components/AddWeight";
 import WeightList from "./components/WeightList";
 import WeightChart from "./components/WeightChart";
-
+import type { MeasurementEntry } from "./types/MeasurementEntry";
+import MeasurementForm from "./components/MeasurementForm";
+import MeasurementList from "./components/MeasurementList";
+import {
+  loadMeasurements,
+  saveMeasurements,
+} from "./utils/measurementStorage";
 function App() {
   const [entries, setEntries] = useState<WeightEntry[]>([]);
+  const [measurements, setMeasurements] = useState<MeasurementEntry[]>(loadMeasurements);
 
   useEffect(() => {
     setEntries(loadWeights());
@@ -15,14 +22,27 @@ function App() {
   useEffect(() => {
     saveWeights(entries);
   }, [entries]);
+  
+  useEffect(() => {
+    saveMeasurements(measurements);
+}, [measurements]);
 
   function addEntry(entry: WeightEntry) {
     setEntries([...entries, entry]);
   }
-
   function deleteEntry(id: string) {
     setEntries(entries.filter(e => e.id !== id));
   }
+
+  const handleAddMeasurement = (entry: MeasurementEntry) => {
+    setMeasurements((current) => [entry, ...current]);
+  };
+
+  const handleDeleteMeasurement = (id: string) => {
+    setMeasurements((current) =>
+      current.filter((entry) => entry.id !== id)
+    );
+  };
 
   const exportData = () => {
     const now = new Date();
@@ -34,6 +54,7 @@ function App() {
     a.href = url
     a.download = `weight-data-${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}.json`
     a.click()
+
 
     URL.revokeObjectURL(url)
   }
@@ -106,11 +127,16 @@ function App() {
           <div className="bg-white shadow-md rounded-lg p-4 md:p-6">
             <WeightList entries={entries} onDelete={deleteEntry} />
           </div>
+
+          <MeasurementForm onAdd={handleAddMeasurement} />
+          <MeasurementList
+            measurements={measurements}
+            onDelete={handleDeleteMeasurement}
+          />
         </div>
       </div>
   </div>
 </div>
   );
-}
-
+};
 export default App;
