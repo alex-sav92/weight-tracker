@@ -46,43 +46,81 @@ function App() {
   };
 
   const exportData = () => {
+
     const now = new Date();
-    const data = JSON.stringify(entries, null, 2)
-    const blob = new Blob([data], { type: "application/json" })
-    const url = URL.createObjectURL(blob)
 
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `weight-data-${now.getFullYear()}-${now.getMonth()+1}-${now.getDate()}.json`
-    a.click()
+  const data = {
+    weights: entries,
+    measurements: measurements,
+  };
 
+  const json = JSON.stringify(data, null, 2);
 
-    URL.revokeObjectURL(url)
+    const blob = new Blob([json], {
+      type: "application/json",
+    });
+
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `weight-tracker-${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.json`;
+    a.click();
+
+    URL.revokeObjectURL(url);
   }
 
-  const importData = (file: File) => {
-    const reader = new FileReader()
+ const importData = (file: File) => {
+  const reader = new FileReader();
 
-    reader.onload = (e) => {
-      try {
-        const parsed = JSON.parse(e.target?.result as string)
+  reader.onload = (e) => {
+    try {
+      const result = e.target?.result;
 
-        if (!Array.isArray(parsed)) {
-          alert("Invalid file format")
-          return
-        }
-        if (!confirm("This will replace your current data. Continue?")) return
-        
-        setEntries(parsed)
-        localStorage.setItem("weights", JSON.stringify(parsed))
-      } catch (error) {
-        alert("Failed to read file")
+      if (typeof result !== "string") {
+        alert("Could not read the file.");
+        return;
       }
+
+      const parsed = JSON.parse(result);
+
+      // New format: weights + measurements
+      if (
+        parsed &&
+        !Array.isArray(parsed) &&
+        Array.isArray(parsed.weights) &&
+        Array.isArray(parsed.measurements)
+      ) {
+        if (!confirm("This will replace your current data. Continue?")) {
+          return;
+        }
+
+        setEntries(parsed.weights);
+        setMeasurements(parsed.measurements);
+
+        return;
+      }
+
+      // Old format: weights only
+      if (Array.isArray(parsed)) {
+        if (!confirm("This will replace your current weight data. Continue?")) {
+          return;
+        }
+
+        setEntries(parsed);
+
+        return;
+      }
+
+      alert("Invalid file format.");
+    } catch (error) {
+      console.error(error);
+      alert("Failed to read file.");
     }
+  };
 
-  reader.readAsText(file)
-}
-
+  reader.readAsText(file);
+};
   return (
   <div className="min-h-screen bg-gray-100 p-4">
     <div className="max-w-full md:max-w-3xl lg:max-w-6xl mx-auto">

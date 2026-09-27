@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { JSX } from "react/jsx-runtime";
 import type { WeightEntry } from "../types/WeightEntry";
 import { formatDate } from "../utils/date";
@@ -7,13 +8,18 @@ type Props = {
 };
 
 export default function WeightList({ entries, onDelete }: Props) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const sorted = [...entries].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   )
 
+  const visibleEntries = isExpanded
+  ? sorted
+  : sorted.slice(0, 5);
+
  return (
     <ul className="divide-y divide-gray-200">
-      {sorted.map((e, idx) => {
+      {visibleEntries.map((e, idx) => {
         // Compare to previous entry for arrow
         let arrow: JSX.Element | null = null;
 
@@ -53,6 +59,16 @@ export default function WeightList({ entries, onDelete }: Props) {
           </li>
         );
       })}
+      {entries.length > 5 && (
+        <button
+          onClick={() => setIsExpanded((current) => !current)}
+          className="mt-4 w-full flex items-center justify-center gap-2 text-blue-600 hover:text-blue-800 font-medium"
+        >
+          {isExpanded ? "Show less" : "Show all"}
+          <span>{isExpanded ? "↑" : "↓"}</span>
+        </button>
+      )}
+
     </ul>
   );
 }

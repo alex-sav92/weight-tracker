@@ -56,7 +56,11 @@ export default function MeasurementList({
                 </h3>
 
                 <button
-                  onClick={() => onDelete(entry.id)}
+                  onClick={() => {
+                    if (confirm("Are you sure you want to delete this measurement?")) {
+                      onDelete(entry.id);
+                    }
+              }}
                   className="text-sm text-red-600 hover:text-red-800"
                 >
                   Delete
