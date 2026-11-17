@@ -69,7 +69,6 @@ export default function MeasurementForm({ onAdd }: MeasurementFormProps) {
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Chest (cm)
         </label>
-
         <input
           type="number"
           step="0.1"
@@ -85,7 +84,6 @@ export default function MeasurementForm({ onAdd }: MeasurementFormProps) {
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Waist (cm)
         </label>
-
         <input
           type="number"
           step="0.1"
@@ -101,13 +99,42 @@ export default function MeasurementForm({ onAdd }: MeasurementFormProps) {
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Hips (cm)
         </label>
-
         <input
           type="number"
           step="0.1"
           min="0"
           value={hips}
           onChange={(e) => setHips(e.target.value)}
+          placeholder="e.g. 101.5"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Neck (cm)
+        </label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={neck}
+          onChange={(e) => setNeck(e.target.value)}
+          placeholder="e.g. 101.5"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1">
+          Biceps (cm)
+        </label>
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          value={biceps}
+          onChange={(e) => setBiceps(e.target.value)}
           placeholder="e.g. 101.5"
           className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />

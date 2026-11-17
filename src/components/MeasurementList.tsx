@@ -45,6 +45,18 @@ export default function MeasurementList({
             "hips"
           );
 
+          const previousNeck = getPreviousMeasurementValue(
+            measurements,
+            index,
+            "neck"
+          );
+
+          const previousBiceps = getPreviousMeasurementValue(
+            measurements,
+            index,
+            "biceps"
+          );
+
           return (
             <div
               key={entry.id}
@@ -102,6 +114,32 @@ export default function MeasurementList({
                       change={getMeasurementChange(
                         entry.hips,
                         previousHips
+                      )}
+                    />
+                  </p>
+                )}
+
+                {entry.neck !== undefined && (
+                  <p>
+                    <span className="font-medium">Neck:</span>{" "}
+                    {entry.neck} cm{" "}
+                    <MeasurementChange
+                      change={getMeasurementChange(
+                        entry.neck,
+                        previousNeck
+                      )}
+                    />
+                  </p>
+                )}
+
+                 {entry.biceps !== undefined && (
+                  <p>
+                    <span className="font-medium">Biceps:</span>{" "}
+                    {entry.biceps} cm{" "}
+                    <MeasurementChange
+                      change={getMeasurementChange(
+                        entry.biceps,
+                        previousBiceps
                       )}
                     />
                   </p>

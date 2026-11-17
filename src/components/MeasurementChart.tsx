@@ -62,6 +62,20 @@ export default function MeasurementChart({
             ),
             tension: 0.3,
           },
+          {
+            label: "Neck",
+            data: sortedMeasurements.map((entry) =>
+              entry.neck ?? null
+            ),
+            tension: 0.3,
+          },
+          {
+            label: "Biceps",
+            data: sortedMeasurements.map((entry) =>
+              entry.biceps ?? null
+            ),
+            tension: 0.3,
+          },
         ],
       },
       options: {
